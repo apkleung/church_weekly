@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>主日崇拜程序表</title>
+<style>
+  :root{--brand:#b8863b;--brand-dark:#8a6230;--ink:#2c2c2c;--bg:#f6f3ec;--card:#fff;--line:#e3dccb;--muted:#7a7566;--accent:#c0392b}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:linear-gradient(135deg,var(--brand),#caa25b);color:#fff;padding:20px 20px 16px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  header h1{margin:0;font-size:1.4rem;letter-spacing:.06em}
+  header .sub{opacity:.85;font-size:.9rem;margin-top:2px}
+  .toolbar{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .toolbar button{border:none;padding:8px 13px;border-radius:6px;cursor:pointer;font-size:.85rem;background:rgba(255,255,255,.92);color:var(--brand-dark);font-weight:600;transition:transform .05s}
+  .toolbar button:hover{transform:translateY(-1px)}
+  .toolbar button.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6)}
+  .toolbar button.ghost:hover{background:rgba(255,255,255,.15)}
+  main{max-width:1000px;margin:0 auto;padding:20px 14px 90px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 18px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  .card h2{margin:0 0 4px;font-size:1.05rem;color:var(--brand-dark);border-left:4px solid var(--brand);padding-left:10px;letter-spacing:.05em}
+  .card h2 small{font-weight:normal;color:var(--muted);font-size:.78rem;margin-left:6px}
+  .submy{font-size:.85rem;color:var(--muted);margin:2px 0 14px;padding-left:14px}
+  .submy .combo{display:inline-flex;width:220px;vertical-align:middle}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px 16px}
+  .full{grid-column:1/-1}
+  @media(max-width:700px){.grid,.grid3{grid-template-columns:1fr}}
+  label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:4px;font-weight:600}
+  input,select,textarea{width:100%;padding:9px 10px;border:1px solid #cfc8b8;border-radius:6px;font-size:.95rem;font-family:inherit;background:#fff;color:var(--ink)}
+  input:focus,select:focus,textarea:focus{outline:2px solid #d9b45e;border-color:transparent}
+  textarea{resize:vertical;min-height:54px}
+  .req::after{content:" *";color:var(--accent);font-weight:bold}
+  .hint,.amt-inline{font-size:.75rem;color:var(--muted);margin-top:3px}
+  .checkbox-group{display:flex;flex-wrap:wrap;gap:10px}
+  .checkbox-group label{display:inline-flex;align-items:center;gap:6px;background:#f1ece0;border:1px solid var(--line);border-radius:20px;padding:6px 12px;cursor:pointer;font-weight:500;color:var(--ink);font-size:.88rem;margin:0}
+  .checkbox-group label:has(input:checked){background:var(--brand);color:#fff;border-color:var(--brand)}
+  .checkbox-group input{width:auto;accent-color:var(--brand)}
+
+  .hymn{border:1px dashed #cfc8b8;border-radius:8px;padding:12px;margin-bottom:12px;background:#fbfaf6;position:relative}
+  .hymn .hnum{position:absolute;top:10px;right:12px;font-size:.75rem;color:var(--muted);background:#eee;border-radius:12px;padding:1px 9px}
+  .hymn .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .youtube-row{display:flex;gap:6px;align-items:center}
+  .youtube-row input{flex:1}
+  @media(max-width:640px){.hymn .row{grid-template-columns:1fr}.youtube-row{flex-direction:column;align-items:stretch}}
+  .del-hymn{margin-top:8px;background:#fff;border:1px solid #d8a09a;color:#b34028;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:.8rem}
+  .del-hymn:hover{background:#fbe9e6}
+  .add-hymn{border:2px dashed #caa25b;background:#fdf9ef;width:100%;padding:10px;border-radius:8px;cursor:pointer;font-size:.9rem;color:var(--brand-dark);font-weight:600}
+  .add-hymn:hover{background:#f5ead2}
+  .add-hymn.sm{padding:7px;font-size:.85rem}
+
+  .bsp{border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;background:#fdfcf9}
+  .srow{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+  .srow .field{flex:1;min-width:130px}
+  .del-sc{margin-top:8px;background:#fff;border:1px solid #d8a09a;color:#b34028;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:.8rem}
+  .del-sc:hover{background:#fbe9e6}
+  .scripture-text{background:#f4efe2;border-left:4px solid var(--brand);padding:10px 12px;margin-top:8px;border-radius:4px;font-size:.92rem}
+  .scripture-text .sref{font-weight:bold;color:var(--brand-dark);margin-bottom:6px}
+  .scripture-text .v{margin:2px 0}
+  .scripture-text .v .vn{color:#8a6d3b;font-size:.8rem;margin-right:4px}
+
+  .switch-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .switch{position:relative;width:52px;height:28px;display:inline-block;flex-shrink:0}
+  .switch input{opacity:0;width:0;height:0}
+  .slider{position:absolute;cursor:pointer;inset:0;background:#ccc;border-radius:28px;transition:.2s}
+  .slider:before{content:"";position:absolute;height:20px;width:20px;left:4px;bottom:4px;background:#fff;border-radius:50%;transition:.2s}
+  .switch input:checked + .slider{background:var(--brand)}
+  .switch input:checked + .slider:before{transform:translateX(24px)}
+  .sc-status{font-weight:bold;font-size:.95rem}.sc-status.yes{color:#2e7d32}.sc-status.no{color:var(--accent)}
+
+  .amount-box{position:relative;flex:1}
+  .amount-box .dollar{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#8a6d3b;font-weight:600;pointer-events:none}
+  .amount-box input{padding-left:20px}
+  select.mn{flex:0 0 88px;width:88px}
+  .date-picker-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  .date-picker-row .date-field{flex:1;min-width:210px}
+  .date-picker-row button{border:1px solid var(--brand);background:#fff;color:var(--brand-dark);border-radius:6px;padding:9px 14px;cursor:pointer;font-weight:600;font-size:.85rem}
+  .date-row4{display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-end}
+  .date-row4 .date-field .f{display:none}
+  .date-row4 .date-field{display:flex;flex-direction:column;flex:0 0 auto;min-width:0}
+  .date-row4 .date-field.d1{align-items:flex-start}
+  .date-row4 .hint.sac{font-size:.72rem;color:var(--muted);margin-top:2px;min-height:4px}
+  .date-row4 .date-field #svcDate, .date-row4 .date-field .savedpick{width:150px;padding:8px 10px;border:1px solid #cfc8b8;border-radius:6px;font-size:.9rem;}
+  .date-row4 button{border:1px solid var(--brand);background:#fff;color:var(--brand-dark);border-radius:6px;padding:9px 14px;cursor:pointer;font-weight:600;font-size:.85rem;white-space:nowrap}
+  .date-row4 label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:2px;font-weight:600}
+  .savedlist{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .savedlist button{border:1px solid var(--line);background:#fff;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:.82rem;color:var(--ink)}
+  .savedlist button:hover{border-color:var(--brand);color:var(--brand-dark)}
+
+  .combo{position:relative;display:flex}
+  .combo input{flex:1;min-width:0;padding-right:4px}
+  .combo-btn{flex:0 0 32px;border:1px solid #cfc8b8;border-left:none;border-radius:0 6px 6px 0;background:#fff;color:var(--brand-dark);cursor:pointer;font-size:.85rem}
+  .combo-btn:hover{background:#f5ead2}
+  .combo-list{position:absolute;top:100%;left:0;right:0;z-index:40;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.15);max-height:230px;overflow:auto}
+  .combo-list .combo-item{padding:7px 10px;cursor:pointer;font-size:.9rem}
+  .combo-list .combo-item:hover{background:#f0eadb;color:var(--brand-dark)}
+  .combo-list .combo-empty{padding:7px 10px;font-size:.8rem;color:var(--muted)}
+
+  .report-item{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:8px;background:#fdfcf9}
+  .report-item .rr{flex:0 0 26px;height:24px;background:var(--brand);color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;margin-top:6px}
+  .report-item textarea{min-height:44px;flex:1}
+  .report-item .rb{display:flex;gap:5px;flex-direction:column}
+  .report-item .rb button{background:#fff;border:1px solid var(--line);border-radius:6px;cursor:pointer;padding:3px 9px;font-size:.72rem;color:var(--ink)}
+  .report-item .rb button:hover{border-color:var(--brand);color:var(--brand-dark)}
+  .report-item .rb .del-r{color:#b34028;border-color:#d8a09a}
+  .del-report{margin-top:6px;background:#fff;border:1px solid #d8a09a;color:#b34028;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.75rem}
+  .toggle-row{display:inline-flex;align-items:center;gap:10px;margin:6px 10px 6px 0;background:#f8f5ec;border:1px solid var(--line);border-radius:8px;padding:8px 12px;white-space:nowrap}
+  .toggle-row label{display:inline-flex;align-items:center;gap:6px;font-weight:600;margin:0;cursor:pointer;color:var(--ink)}
+  .blk{border:1px dashed #d8cfb8;border-radius:8px;padding:12px;margin-top:12px;background:#fcfaf4}
+  .blk h3{margin:0 0 10px;font-size:.92rem;color:var(--brand-dark)}
+
+  .resp-view{background:#f0eadb;border-left:4px solid var(--brand);border-radius:4px;padding:10px 12px;font-size:.92rem}
+  .resp-view .rv-name{font-weight:bold;color:var(--brand-dark)}
+
+  .da-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:6px}
+  .da-item .no{flex:0 0 26px;height:24px;background:var(--brand);color:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:600;margin-top:6px}
+  .da-item textarea{flex:1}
+
+  .output{background:#1f2430;color:#dfe6f0;border-radius:10px;padding:18px;font-family:"Courier New",monospace;font-size:.82rem;white-space:pre-wrap;min-height:140px;max-height:480px;overflow:auto}
+  .copy-btn{margin-top:10px;background:var(--brand);color:#fff;border:none;padding:9px 18px;border-radius:6px;cursor:pointer;font-size:.9rem;font-weight:600}
+  .copy-btn:hover{background:var(--brand-dark)}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c2c2c;color:#fff;padding:10px 22px;border-radius:30px;font-size:.88rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100;max-width:90vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .toast.show{opacity:1}
+  .modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:120}
+  .modal-box{background:#fff;border-radius:12px;max-width:420px;width:90%;padding:22px;box-shadow:0 6px 24px rgba(0,0,0,.25);text-align:center}
+  .modal-msg{font-size:1rem;color:var(--ink);margin:0 0 16px;line-height:1.5}
+  .modal-btns{display:flex;gap:10px;justify-content:center}
+  .modal-btns button{padding:10px 16px;border-radius:8px;font-size:.9rem;cursor:pointer;border:1px solid var(--line)}
+  .modal-yes{background:var(--brand-dark);color:#fff;border-color:var(--brand-dark)!important}
+  .modal-no{background:#fff;color:var(--ink)}
+  .section-note{font-size:.78rem;color:var(--muted);margin-top:10px}
+  .sachperson{flex:0 0 auto;min-width:0}
+  .sachperson select{width:170px;padding:9px 10px;border:1px solid #cfc8b8;border-radius:6px;font-size:.95rem;font-family:inherit}
+  .footer{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:10px;padding:10px 12px;background:var(--brand-dark);z-index:90}
+  .footer button{border:none;padding:9px 16px;border-radius:6px;cursor:pointer;font-size:.88rem;background:rgba(255,255,255,.92);color:var(--brand-dark);font-weight:600}
+  .footer button.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.6)}
+  .navfab{position:fixed;right:14px;z-index:95;width:38px;height:38px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.25);opacity:.9}
+  .navfab:hover{opacity:1}
+  #navUp{bottom:74px}
+  #navDown{bottom:20px;background:var(--brand-dark)}
+  main{padding-bottom:130px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>✝ 主日崇拜程序表</h1>
+  <div class="sub">基督教宣聖會馬鞍山堂 — 程序表輸入</div>
+  <div class="toolbar">
+    <button onclick="exportJSON()">📤 輸出Word檔</button>
+    <button class="ghost" onclick="resetAll()">🗑️ 清空</button>
+  </div>
+</header>
+
+<a id="navUp" class="navfab" href="javascript:window.scrollTo(0,0)" title="回到頂部">▲</a>
+<a id="navDown" class="navfab" href="javascript:window.scrollTo(0,document.body.scrollHeight)" title="滾到底部">▼</a>
+
+<main>
+
+  <section class="card">
+    <h2>崇拜日期及儲存版本</h2>
+    <div class="date-row4">
+      <div class="date-field d1"><label>崇拜日期</label><input type="date" id="svcDate" onchange="onDateChange()"><div class="hint sac" id="sacHint"></div></div>
+      <button onclick="saveAsDate()">💾 儲存</button>
+      <div class="date-field"><label>已儲存版本</label><select id="savedPick" class="savedpick"></select></div>
+      <button onclick="loadPicked()">🕘 顯示此日期版本</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>事奉人員</h2>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+      <div><label>講員</label><select id="speaker"></select></div>
+      <div><label>領會</label><select id="leader"></select></div>
+      <div><label>司樂</label><select id="musician"></select></div>
+      <div><label>招待</label><select id="usher"></select></div>
+      <div><label>感恩分享</label><select id="thanks"></select></div>
+    </div>
+    <div class="section-note">每個下拉各自有名單（喺 JS <b>NAMES</b> 修改）。<a href="https://docs.google.com/spreadsheets/d/1LWyKt1YLdmqSMHRQhH-0EsmxNNU-zjCx/edit?gid=104822617#gid=104822617" target="_blank" rel="noopener" style="color:var(--brand-dark);font-weight:600;text-decoration:underline">📋 事奉人員表</a> — 撳開 worksheet 睇每週負責人。</div>
+  </section>
+
+  <section class="card">
+    <h2>宣召 <small>限 1 段經文</small></h2>
+    <div id="xuanzhao"></div>
+  </section>
+
+  <section class="card">
+    <h2>敬拜 <small>最多 8 首</small></h2>
+    <div id="worshipHymns"></div>
+    <button class="add-hymn" onclick="addWorship()">＋ 加一首敬拜詩歌</button>
+  </section>
+
+  <section class="card">
+    <h2>讀經 <small>最多 5 段，每段含經文＋出處</small></h2>
+    <div id="dujing"></div>
+    <button class="add-hymn" onclick="addDujing()">＋ 加一段讀經</button>
+  </section>
+
+  <section class="card">
+    <h2>證道</h2>
+    <div><label>證道主題</label><input type="text" id="sermonTopic" placeholder="例如：聖潔降服者"></div>
+  </section>
+
+  <section class="card">
+    <h2>回應 <small>選自敬拜詩歌，或另揀自訂一首</small></h2>
+    <div style="max-width:420px">
+      <label>揀詩歌</label>
+      <select id="respPick" onchange="respOnChange()"></select>
+    </div>
+    <div id="respCustom" class="hymn" style="margin-top:10px;display:none"></div>
+    <div id="respView" class="resp-view" style="margin-top:10px;display:none"></div>
+  </section>
+
+  <section class="card">
+    <h2>聖餐</h2>
+    <div class="switch-row">
+      <div style="display:flex;align-items:center;gap:10px">
+        <label class="switch"><input type="checkbox" id="sachYes" onchange="updateSac()"><span class="slider"></span></label>
+        <span class="sc-status no" id="scStatus">本周無聖餐</span>
+      </div>
+      <div class="sachperson"><label>聖餐負責人</label><select id="sachPerson"></select></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>奉獻 <small>可多選</small></h2>
+    <div class="checkbox-group" id="offeringGroup">
+      <label><input type="checkbox" value="什一奉獻"> 什一奉獻</label>
+      <label><input type="checkbox" value="主日奉獻"> 主日奉獻</label>
+      <label><input type="checkbox" value="感恩奉獻"> 感恩奉獻</label>
+      <label><input type="checkbox" value="香膏瓶奉獻"> 香膏瓶奉獻</label>
+      <label><input type="checkbox" value="特別奉獻"> 特別奉獻</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>歡迎及報告</h2>
+    <div class="submy">負責人：<select id="welcomePerson" style="width:auto;display:inline-block"></select></div>
+
+    <div id="reportList"></div>
+    <button class="add-hymn sm" onclick="addReport()">＋ 加一項報告事項（最多 20 項）</button>
+
+    <div class="blk">
+      <h3>下日崇拜事奉人員</h3>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px" class="nxgrid">
+        <div><label>講員</label><select id="nextSpeaker"></select></div>
+        <div><label>領會</label><select id="nextLeader"></select></div>
+        <div><label>司樂</label><select id="nextMusician"></select></div>
+        <div><label>招待</label><select id="nextUsher"></select></div>
+        <div><label>感恩分享</label><select id="nextThanks"></select></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <h3>上主日聚會出席人數</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+        <div><label>主日崇拜</label><input type="number" min="0" class="num" id="pSunday"></div>
+        <div><label>主日學</label><input type="number" min="0" class="num" id="pSchool"></div>
+        <div><label>門徒訓練</label><input type="number" min="0" class="num" id="pDisciple"></div>
+        <div><label>每月祈禱會</label><input type="number" min="0" class="num" id="pPrayer"></div>
+        <div><label>學生團契</label><input type="number" min="0" class="num" id="pFellowship"></div>
+        <div><label>Patrick 飯局</label><input type="number" min="0" class="num" id="pPatrick"></div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <h3>上主日崇拜奉獻</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>上主日</label><div class="amount-box"><span class="dollar">$</span><input class="amt" id="cWeek" inputmode="decimal"></div></div>
+        <div>
+          <label>月份<small>（可改）</small></label>
+          <div style="display:flex;gap:6px;align-items:stretch">
+            <select class="mn" id="cMonth"></select>
+            <div class="amount-box" style="flex:1"><span class="dollar">$</span><input class="amt" id="cMonthAmt" inputmode="decimal"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blk">
+      <h3>上日什一奉獻</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>上主日</label><div class="amount-box"><span class="dollar">$</span><input class="amt" id="tWeek" inputmode="decimal"></div></div>
+        <div>
+          <label>月份<small>（可改）</small></label>
+          <div style="display:flex;gap:6px;align-items:stretch">
+            <select class="mn" id="tMonth"></select>
+            <div class="amount-box" style="flex:1"><span class="dollar">$</span><input class="amt" id="tMonthAmt" inputmode="decimal"></div>
+          </div>
+        </div>
+      </div>
+      <div class="toggle-row"><label><input type="checkbox" id="oilOn" onchange="toggleBody('oilOn','oilRow')"> 顯示香膏瓶奉獻</label></div>
+      <div id="oilRow" class="rowBody" style="display:none;grid-template-columns:1fr 1fr;gap:10px;margin-left:6px">
+        <div><label>香膏瓶奉獻·上主日</label><div class="amount-box"><span class="dollar">$</span><input class="amt" id="oilWeek" inputmode="decimal"></div></div>
+        <div>
+          <label>香膏瓶奉獻·月份</label>
+          <div style="display:flex;gap:6px;align-items:stretch">
+            <select class="mn" id="oilMonth"></select>
+            <div class="amount-box" style="flex:1"><span class="dollar">$</span><input class="amt" id="oilMonthAmt" inputmode="decimal"></div>
+          </div>
+        </div>
+      </div>
+      <div class="toggle-row"><label><input type="checkbox" id="gOn" onchange="toggleBody('gOn','gRow')"> 顯示感恩奉獻</label></div>
+      <div id="gRow" class="rowBody" style="display:none;grid-template-columns:1fr 1fr;gap:10px;margin-left:6px">
+        <div><label>感恩奉獻 上主日</label><div class="amount-box"><span class="dollar">$</span><input class="amt" id="thWeek" inputmode="decimal"></div></div>
+        <div>
+          <label>感恩·月份</label>
+          <div style="display:flex;gap:6px;align-items:stretch">
+            <select class="mn" id="thMonth"></select>
+            <div class="amount-box" style="flex:1"><span class="dollar">$</span><input class="amt" id="thMonthAmt" inputmode="decimal"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>每月金句 <small>選 1 段經文</small></h2>
+    <div id="jinyue"></div>
+  </section>
+
+  <section class="card">
+    <h2>代禱事項 <small>最多 10 點</small></h2>
+    <div id="daodao"></div>
+    <button class="add-hymn sm" onclick="addDaodao()">＋ 加一點代禱事項</button>
+  </section>
+
+  <section class="card">
+    <h2>祝福</h2>
+    <div style="max-width:240px"><label>負責人</label><select id="blessPerson"></select></div>
+  </section>
+
+  </main>
+
+<footer class="footer">
+  <button onclick="exportJSON()">📤 輸出Word檔</button>
+  <button class="ghost" onclick="resetAll()">🗑️ 清空</button>
+</footer>
+<div class="toast" id="toast"></div>
+<div class="modal-mask" id="modalMask" style="display:none">
+  <div class="modal-box">
+    <p class="modal-msg">已經儲存咗修改？</p>
+    <div class="modal-btns">
+      <button class="modal-yes" id="modalYes" onclick="modalYesAction(true)">Yes（可以顯示舊版本）</button>
+      <button class="modal-no" id="modalNo" onclick="modalYesAction(false)">No Yet（取消提取舊版本）</button>
+    </div>
+  </div>
+</div>
+
+<script>
+//================ 名單（每個下拉獨立） ================
+const NAMES={
+  speaker:["（待填）","鄺凱寧牧師","吳紀言傳道","游滿國弟兄","何國輝牧師","李健明牧師","孫春梅姑娘","陳秀芬傳道","地區年議會","王麗敏傳道","樊振凌牧師","陳君浩弟兄","黃惠珍牧師","黃婉君傳道","胡寶麒牧師","楊貴英牧師","葉德邦牧師","陳少海牧師","陳君浩傳道","龔清英牧師","麥偉祺牧師","張宛芷傳道","徐健能牧師","梁沛生傳道","蕭楚剛牧師","蘇景光牧師"],
+  leader:["（待填）","滕濟生","張麗紅","周慶華","鄺黃秀華","鄺恩盈","張焯姿","張鳳儀"],
+  musician:["（待填）","周慶華","梁珮君","陳君浩","鄺恩盈"],
+  usher:["（待填）","黃振軒","張焯姿","張鳳儀","阮文婷","滕濟生","梁珮君"],
+  thanks:["（待填）","張鳳儀","陳君浩","鄺恩盈","黃振軒","何張麗紅","滕濟生","何國輝","周慶華","阮文婷","梁珮君","張焯姿","鄺黃秀華","褟桂耀","Jackie"],
+  sachPerson:["（待填）","鄺凱寧牧師","何國輝牧師"],
+  welcomePerson:["何國輝牧師","（領會）"],
+  blessPerson:["（待填）","鄺凱寧牧師","何國輝牧師"],
+  nextSpeaker:["（待填）","鄺凱寧牧師","吳紀言傳道","游滿國弟兄","何國輝牧師","李健明牧師","孫春梅姑娘","陳秀芬傳道","地區年議會","王麗敏傳道","樊振凌牧師","陳君浩弟兄","黃惠珍牧師","黃婉君傳道","胡寶麒牧師","楊貴英牧師","葉德邦牧師","陳少海牧師","陳君浩傳道","龔清英牧師","麥偉祺牧師","張宛芷傳道","徐健能牧師","梁沛生傳道","蕭楚剛牧師","蘇景光牧師"],
+  nextLeader:["（待填）","滕濟生","張麗紅","周慶華","鄺黃秀華","鄺恩盈","張焯姿","張鳳儀"],
+  nextMusician:["（待填）","周慶華","梁珮君","陳君浩","鄺恩盈"],
+  nextUsher:["（待填）","黃振軒","張焯姿","張鳳儀","阮文婷","滕濟生","梁珮君"],
+  nextThanks:["（待填）","張鳳儀","陳君浩","鄺恩盈","黃振軒","何張麗紅","滕濟生","何國輝","周慶華","阮文婷","梁珮君","張焯姿","鄺黃秀華","褟桂耀","Jackie"]
+};
+
+//================= 聖經卷章 ================
+const BOOK_CHAPTERS={1:50,2:40,3:27,4:36,5:34,6:24,7:21,8:4,9:31,10:24,11:22,12:25,13:29,14:36,15:10,16:13,17:10,18:42,19:150,20:31,21:12,22:8,23:66,24:52,25:5,26:48,27:12,28:14,29:3,30:9,31:1,32:4,33:7,34:3,35:3,36:3,37:2,38:14,39:4,40:28,41:16,42:24,43:21,44:28,45:16,46:16,47:13,48:6,49:6,50:4,51:4,52:5,53:3,54:6,55:4,56:3,57:1,58:13,59:5,60:5,61:3,62:5,63:1,64:1,65:1,66:22};
+const BOOK_NAMES={1:"創世記",2:"出埃及記",3:"利未記",4:"民數記",5:"申命記",6:"約書亞記",7:"士師記",8:"路得記",9:"撒母耳記上",10:"撒母耳記下",11:"列王紀上",12:"列王紀下",13:"歷代志上",14:"歷代志下",15:"以斯拉記",16:"尼希米記",17:"以斯帖記",18:"約伯記",19:"詩篇",20:"箴言",21:"傳道書",22:"雅歌",23:"以賽亞書",24:"耶利米書",25:"耶利米哀歌",26:"以西結書",27:"但以理書",28:"何西阿書",29:"約珥書",30:"阿摩司書",31:"俄巴底亞書",32:"約拿書",33:"彌迦書",34:"那鴻書",35:"哈巴谷書",36:"西番雅書",37:"哈該書",38:"撒迦利亞書",39:"瑪拉基書",40:"馬太福音",41:"馬可福音",42:"路加福音",43:"約翰福音",44:"使徒行傳",45:"羅馬書",46:"哥林多前書",47:"哥林多後書",48:"加拉太書",49:"以弗所書",50:"腓立比書",51:"歌羅西書",52:"帖撒羅尼迦前書",53:"帖撒羅尼迦後書",54:"提摩太前書",55:"提摩太後書",56:"提多書",57:"腓利門書",58:"希伯來書",59:"雅各書",60:"彼得前書",61:"彼得後書",62:"約翰一書",63:"約翰二書",64:"約翰三書",65:"猶大書",66:"啟示錄"};
+
+const GB="https://api.getbible.net/v2/cut";
+const LS_KEY="mosSvcForm";
+const MAX_WORSHIP=8,MAX_DUJING=5,MAX_REPORT=20,MAX_DAODAO=10;
+const MONTHS=["一","二","三","四","五","六","七","八","九","十","十一","十二"].map(m=>m+"月份");
+
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function getVal(id){return $(id)?$(id).value:""}
+function setVal(id,v){const e=$(id);if(e)e.value=v==null?"":v}
+function cleanText(t){return String(t||"").replace(/\s+/g,"").replace(/　/g,"")}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2400)}
+/* ===== 負責人 input（自製 combobox：下拉 + 自由打字） ===== */
+let COMBO_OPEN_ID=null;
+function fillPeople(){
+  Object.keys(NAMES).forEach(id=>makeCombo(id));
+}
+function fillOptions(id){
+  return (NAMES[id]||[]).filter(n=>n!=="（待填）");
+}
+function displayListFor(id,filter){
+  const opts=fillOptions(id);
+  const f=(filter||"").trim();
+  return f?opts.filter(o=>o.indexOf(f)>-1):opts;
+}
+function makeCombo(id){
+  const sel=$(id);if(!sel)return;
+  const wrap=document.createElement("div");wrap.className="combo";
+  const inp=document.createElement("input");
+  inp.type="text";inp.id=id;inp.autocomplete="off";inp.placeholder="";
+  inp.setAttribute("data-id",id);
+  const btn=document.createElement("button");btn.type="button";btn.className="combo-btn";btn.textContent="▾";
+  const list=document.createElement("div");list.className="combo-list";list.setAttribute("data-listfor",id);list.style.display="none";
+  wrap.appendChild(inp);wrap.appendChild(btn);wrap.appendChild(list);
+  sel.replaceWith(wrap);
+  renderOptions(id);
+  btn.addEventListener("click",(e)=>{e.preventDefault();e.stopPropagation();toggleCombo(id);});
+  inp.addEventListener("input",()=>{renderFiltered(id,inp.value);openCombo(id,inp.value)});
+  inp.addEventListener("blur",()=>{setTimeout(()=>{if(COMBO_OPEN_ID===id)closeCombo()},150)});
+  inp.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key==="Escape")closeCombo()});
+}
+function renderOptions(id){
+  const list=document.querySelector('.combo-list[data-listfor="'+id+'"]');if(!list)return;
+  list.innerHTML="";
+  fillOptions(id).forEach(o=>{
+    const d=document.createElement("div");d.className="combo-item";d.textContent=o;
+    d.addEventListener("mousedown",(e)=>e.preventDefault());
+    d.addEventListener("click",()=>{$(id).value=o;closeCombo();$(id).focus();});
+    list.appendChild(d);
+  });
+}
+function renderFiltered(id,f){
+  const list=document.querySelector('.combo-list[data-listfor="'+id+'"]');if(!list)return;
+  list.innerHTML="";
+  const shown=displayListFor(id,f);
+  shown.forEach(o=>{
+    const d=document.createElement("div");d.className="combo-item";d.textContent=o;
+    d.addEventListener("mousedown",(e)=>e.preventDefault());
+    d.addEventListener("click",()=>{$(id).value=o;closeCombo();$(id).focus();});
+    list.appendChild(d);
+  });
+  if(!shown.length){const d=document.createElement("div");d.className="combo-empty";d.textContent="（無匹配，可直接打字）";list.appendChild(d)}
+}
+function openCombo(id,f){
+  renderFiltered(id,f);
+  const list=document.querySelector('.combo-list[data-listfor="'+id+'"]');if(!list)return;
+  list.style.display="block";COMBO_OPEN_ID=id;
+}
+function toggleCombo(id){
+  const list=document.querySelector('.combo-list[data-listfor="'+id+'"]');if(!list)return;
+  if(list.style.display==="block"){list.style.display="none";COMBO_OPEN_ID=null}
+  else{openCombo(id,"")}  // ▾按鈕：永遠show全部
+}
+function closeCombo(){if(COMBO_OPEN_ID){const l=document.querySelector('.combo-list[data-listfor="'+COMBO_OPEN_ID+'"]');if(l)l.style.display="none";COMBO_OPEN_ID=null}}
+
+/* ===== 節區間 ===== */
+function parseRange(str,max){const sel=[];if(!str||!str.trim()){for(let i=1;i<=max;i++)sel.push(i);return sel}
+  String(str).split(/[,，、;；\s]+/).forEach(p=>{if(!p)return;p=p.trim();const m=p.match(/^(\d+)\s*[-–—]\s*(\d+)$/);
+  if(m){let a=+m[1],b=+m[2];for(let x=a;x<=b&&x<=max;x++)if(x>=1&&sel.indexOf(x)<0)sel.push(x)}else{const n=+p;if(n>=1&&n<=max&&sel.indexOf(n)<0)sel.push(n)}});
+  sel.sort((a,b)=>a-b);return sel}
+function fmtRange(sel){if(sel.length===1)return String(sel[0]);if(!sel.length)return"";const parts=[];let start=sel[0],prev=sel[0];
+  for(let i=1;i<=sel.length;i++){const cur=sel[i];if(i<sel.length){if(cur===prev+1){prev=cur;continue}}parts.push(start===prev?String(start):start+"-"+prev);if(i<sel.length){start=cur;prev=cur}}return parts.join(", ")}
+function bkOpts(){return Object.keys(BOOK_CHAPTERS).map(id=>"<option value='"+id+"'>"+BOOK_NAMES[id]+"</option>").join("")}
+function chapOpts(n){let o="";for(let i=1;i<=n;i++)o+="<option value='"+i+"'>第 "+i+" 章</option>";return o}
+
+/* ===== 聖經揀選器 ===== */
+function createScripture(container,removable,data){
+  const wrap=document.createElement("div");wrap.className="bsp";
+  const bh="<div class='field'><label>書卷</label><select class='sbook'>"+bkOpts()+"</select></div>";
+  const ch="<div class='field'><label>章</label><select class='schap'>"+chapOpts(50)+"</select></div>";
+  const vh="<div class='field'><label>節（留空=全章）</label><input class='sverses' placeholder='例：1-8, 12'></div>";
+  const brow=document.createElement("div");brow.className="srow";brow.innerHTML=bh+ch+vh;
+  wrap.appendChild(brow);
+  if(removable){const del=document.createElement("button");del.type="button";del.className="del-sc";del.textContent="✕ 刪除";del.onclick=()=>wrap.remove();const dw=document.createElement("div");dw.style.display="flex";dw.style.alignItems="flex-end";dw.style.paddingBottom="9px";dw.appendChild(del);brow.appendChild(dw)}
+  const sc=document.createElement("div");sc.className="scripture-text";sc.textContent="（揀書卷→章自動載入）";wrap.appendChild(sc);
+  container.appendChild(wrap);
+  const bsel=wrap.querySelector(".sbook"),csel=wrap.querySelector(".schap"),vin=wrap.querySelector(".sverses");
+  bsel.onchange=()=>{csel.innerHTML=chapOpts(BOOK_CHAPTERS[bsel.value]||50);fetchVerses(wrap)};
+  csel.onchange=()=>fetchVerses(wrap);
+  vin.onchange=()=>fetchVerses(wrap);
+  if(data){if(data.b)bsel.value=String(data.b);if(data.c){csel.innerHTML=chapOpts(BOOK_CHAPTERS[data.b]||50);csel.value=String(data.c)}if(data.v)vin.value=data.v;if(data.ref)wrap.dataset.ref=data.ref}
+  fetchVerses(wrap);
+  return wrap;
+}
+async function fetchVerses(wrap){
+  const bsel=wrap.querySelector(".sbook"),csel=wrap.querySelector(".schap"),vin=wrap.querySelector(".sverses"),sc=wrap.querySelector(".scripture-text");
+  const b=bsel.value,c=csel.value;if(!b||!c){sc.textContent="";return}
+  sc.innerHTML="<span style='color:#999'>載入中…</span>";
+  try{const r=await fetch(GB+"/"+b+"/"+c+".json");if(!r.ok)throw 0;const d=await r.json();const verses=d.verses||[];
+    const sel=parseRange(vin.value.trim(),verses.length);const bname=BOOK_NAMES[b]||"";const ref=bname+" "+c+":"+fmtRange(sel);
+    const lines=sel.map(i=>{const v=verses[i-1];return v?"<div class='v'><span class='vn'>("+v.verse+")</span>"+esc(cleanText(v.text))+"</div>":""}).join("");
+    sc.innerHTML="<div class='sref'>"+esc(ref)+"</div>"+lines;wrap.dataset.ref=ref;
+  }catch(e){sc.textContent="⚠ 載入經文失敗（需連網）"}
+}
+function readScripture(wrap){const b=wrap.querySelector(".sbook").value,c=wrap.querySelector(".schap").value,v=wrap.querySelector(".sverses").value;return{b:+b,c:+c,v:v,ref:wrap.dataset.ref||""}}
+function scArray(containerId){const a=[];$(containerId).querySelectorAll(".bsp").forEach(w=>a.push(readScripture(w)));return a}
+
+function initSingleScripture(containerId,data){$(containerId).innerHTML="";createScripture($(containerId),false,data)}
+
+/* ===== 敬拜詩歌 ===== */
+function hymnHTML(d){d=d||{};return "<div class='row'>"+
+  "<div><label class='req'>詩歌名</label><input class='hname' value='"+esc(d.name)+"' placeholder='詩歌名稱' oninput='syncRespOptions()'></div>"+
+  "<div class='youtube-row'><div style='flex:1'><label>YouTube 連結<i>（選填）</i></label><input class='hurl' value='"+esc(d.url)+"' placeholder='https://youtube.com/...'></div></div>"+
+  "</div><div><label class='req'>歌詞</label><textarea class='hlyrics'>"+esc(d.lyrics)+"</textarea></div>"}
+function readHymn(div){return{name:((div.querySelector(".hname")||{}).value||"").trim(),url:((div.querySelector(".hurl")||{}).value||"").trim(),lyrics:((div.querySelector(".hlyrics")||{}).value||"").trim()}}
+function renumberHymns(c){c.querySelectorAll(".hymn").forEach((h,i)=>{const x=h.querySelector(".hnum");if(x)x.textContent="第 "+(i+1)+" 首"})}
+function makeHymn(container,data,isResp){
+  const div=document.createElement("div");div.className="hymn";div.innerHTML="<div class='hnum'></div>"+hymnHTML(data);
+  if(!isResp){const del=document.createElement("button");del.type="button";del.className="del-hymn";del.textContent="✕ 刪除";del.onclick=()=>{div.remove();renumberHymns(container);syncRespOptions()};div.appendChild(del)}
+  container.appendChild(div);renumberHymns(container);return div}
+function worshipArray(){const o=[];$("worshipHymns").querySelectorAll(".hymn").forEach(h=>o.push(readHymn(h)));return o}
+function addWorship(){if($("worshipHymns").querySelectorAll(".hymn").length>=MAX_WORSHIP){toast("最多 "+MAX_WORSHIP+" 首");return}makeHymn($("worshipHymns"),null,false);syncRespOptions()}
+function addDujing(){if($("dujing").querySelectorAll(".bsp").length>=MAX_DUJING){toast("最多 "+MAX_DUJING+" 段");return}createScripture($("dujing"),true,null)}
+
+/* ===== 回應 ===== */
+function initResp(){syncRespOptions()}
+function syncRespOptions(){const p=$("respPick");if(!p)return;const cur=p.value;const hymns=worshipArray();
+  p.innerHTML="";const ph=document.createElement("option");ph.value="__ph";ph.textContent="（揀敬拜詩歌，或下面自訂另一首）";p.appendChild(ph);
+  hymns.forEach((h,i)=>{const o=document.createElement("option");o.value="w"+i;o.textContent=(h.name||("敬拜詩 "+(i+1)));p.appendChild(o)});
+  const c=document.createElement("option");c.value="custom";c.textContent="✎ 自訂另一首";p.appendChild(c);
+  if(cur&&[...p.options].some(o=>o.value===cur))p.value=cur;else p.value = hymns.length===0?"custom":ph.value;
+  respOnChange()}
+function respOnChange(){const v=$("respPick").value;const cu=$("respCustom"),nv=$("respView");
+  if(v==="custom"||v==="__ph"){showRespCustom()}
+  else{showRespWorship(+v.slice(1))}
+}
+function ensureCustomFields(){const cu=$("respCustom");if(!(cu.dataset.done)){cu.innerHTML="<div class='row'><div><label>詩歌名</label><input id='respName' placeholder='詩歌名稱'></div><div class='youtube-row'><div style='flex:1'><label>YouTube</label><input id='respUrl' placeholder='https://youtube.com/...'></div></div></div><div><label>歌詞</label><textarea id='respLyrics'></textarea></div>";cu.dataset.done=1}}
+function showRespCustom(){const cu=$("respCustom"),nv=$("respView");cu.style.display="block";nv.style.display="none";ensureCustomFields()}
+function showRespWorship(idx){const cu=$("respCustom"),nv=$("respView");cu.style.display="none";nv.style.display="block";
+  const h=worshipArray()[idx]||{};nv.innerHTML="<div class='rv-name'>"+esc(h.name||"（未命名）")+"</div>"+(h.url?"<div><a href='"+esc(h.url)+"' target='_blank'>"+esc(h.url)+"</a></div>":"")+"<div style='white-space:pre-wrap;font-size:.88rem'>"+esc(h.lyrics)+"</div>"}
+function readResp(){const v=$("respPick").value;
+  if(v&&v!=="custom"&&v!=="__ph"){const idx=+v.slice(1);const h=worshipArray()[idx]||{};return{mode:"worship",idx,name:h.name||"",url:h.url||"",lyrics:h.lyrics||""}}
+  ensureCustomFields();return{mode:"custom",idx:-1,name:$("respName")?.value.trim()||"",url:$("respUrl")?.value.trim()||"",lyrics:$("respLyrics")?.value.trim()||""}}
+function setResp(r){if(!r)return;const p=$("respPick");p.value=(r.mode==="worship"&&r.idx>=0&&[...p.options].some(o=>o.value==="w"+r.idx))?("w"+r.idx):"custom";respOnChange();if(r.mode==="custom"){$("respName").value=r.name||"";$("respUrl").value=r.url||"";$("respLyrics").value=r.lyrics||""}}
+
+/* ===== 聖餐 ===== */
+function updateSac(){const on=$("sachYes").checked;const st=$("scStatus");if(on){st.textContent="本周有聖餐";st.className="sc-status yes"}else{st.textContent="本周無聖餐";st.className="sc-status no"}}
+
+/* ===== 月份/金額 ===== */
+function monthOptions(){return MONTHS.map((m,i)=>"<option value='"+m+"'>"+m+"</option>").join("")}
+function seedMonths(){document.querySelectorAll(".mn").forEach(el=>{el.innerHTML=monthOptions();if(!el.value)el.value=currentMonthLabel})}
+const now=new Date();const currentMonthLabel=MONTHS[now.getMonth()];
+function fmtAmt(v){v=String(v==null?"":v).replace(/[^0-9.]/g,"");const p=v.split(".");p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");return p.join(".")}
+function cleanNum(id){const e=$(id);if(!e)return 0;const n=parseFloat(String(e.value).replace(/,/g,""));return isNaN(n)?0:n}
+function bindAmts(){document.querySelectorAll(".amt").forEach(el=>{el.addEventListener("input",()=>{const c=el.selectionStart;el.value=fmtAmt(el.value);const dc=String(el.value).length;el.setSelectionRange(Math.min(c,dc),Math.min(c,dc))})})}
+
+/* ===== 歡迎報告 ===== */
+function addReport(val){
+  if($("reportList").querySelectorAll(".report-item").length>=MAX_REPORT){toast("最多 "+MAX_REPORT+" 項");return}
+  const it=document.createElement("div");it.className="report-item";
+  it.innerHTML="<div class='rr'></div><textarea placeholder='報告事項…'></textarea><div class='rb'><button type='button' class='up'>▲</button><button type='button' class='dn'>▼</button><button type='button' class='del-r'>✕</button></div>";
+  if(val!==undefined)it.querySelector("textarea").value=val;
+  it.querySelector(".up").onclick=()=>moveReport(it,-1);
+  it.querySelector(".dn").onclick=()=>moveReport(it,1);
+  it.querySelector(".del-r").onclick=()=>{it.remove();renumReports()};
+  $("reportList").appendChild(it);renumReports()}
+function moveReport(it,dir){
+  const list=[...$("reportList").children],i=list.indexOf(it),j=i+dir;
+  if(j<0||j>=list.length)return;
+  $("reportList").insertBefore(it,(dir>0?list[j+1]:list[j]));
+  renumReports()}
+function renumReports(){[...$("reportList").children].forEach((it,i)=>{const n=it.querySelector(".rr");if(n)n.textContent=i+1})}
+function readReports(){const a=[];$("reportList").querySelectorAll(".report-item textarea").forEach(t=>{const v=t.value.trim();if(v)a.push(v)});return a}
+
+/* ===== 代禱事項 ===== */
+function addDaodao(){if($("daodao").querySelectorAll(".da-item").length>=MAX_DAODAO){toast("最多 "+MAX_DAODAO+" 點");return}
+  const c=$("daodao").querySelectorAll(".da-item").length;
+  const item=document.createElement("div");item.className="da-item";item.innerHTML="<div class='no'></div><textarea placeholder='代禱事項…'></textarea><button type='button' class='del-row' style='align-self:center'>✕</button>";
+  item.querySelector(".del-row").onclick=()=>{item.remove();reDaodao()};$("daodao").appendChild(item);reDaodao()}
+function reDaodao(){$("daodao").querySelectorAll(".da-item").forEach((it,i)=>{const n=it.querySelector(".no");if(n)n.textContent=(i+1)})}
+
+/* ===== 開關 ===== */
+function toggleBody(cbId,bodyId){$(bodyId).style.display=$(cbId).checked?"grid":"none"}
+
+/* ===== 收集 ===== */
+function collectReal(){
+  const offering=[];$("offeringGroup").querySelectorAll("input:checked").forEach(c=>offering.push(c.value));
+  return {date:getVal("svcDate"),speaker:getVal("speaker"),leader:getVal("leader"),musician:getVal("musician"),usher:getVal("usher"),thanks:getVal("thanks"),
+    xz:scArray("xuanzhao")[0]||{},
+    worship:worshipArray(),
+    dj:scArray("dujing"),
+    sermon:getVal("sermonTopic"),
+    resp:readResp(),sach:$("sachYes").checked,sachPerson:getVal("sachPerson"),
+    offering,
+    welcomePerson:(getVal("welcomePerson")==="（領會）"?(getVal("leader")||"（領會）"):getVal("welcomePerson")),
+    reports:readReports(),
+    next:{sp:getVal("nextSpeaker"),ld:getVal("nextLeader"),mu:getVal("nextMusician"),us:getVal("nextUsher"),th:getVal("nextThanks")},
+    attendance:{sun:cleanNum("pSunday"),sch:cleanNum("pSchool"),disc:cleanNum("pDisciple"),pr:cleanNum("pPrayer"),fel:cleanNum("pFellowship"),pat:cleanNum("pPatrick")},
+    cWeek:NumVal("cWeek"),cMonth:getVal("cMonth"),cMonthAmt:NumVal("cMonthAmt"),
+    tWeek:NumVal("tWeek"),tMonth:getVal("tMonth"),tMonthAmt:NumVal("tMonthAmt"),
+    oilOn:$("oilOn").checked,oilWeek:NumVal("oilWeek"),oilMonth:getVal("oilMonth"),oilMonthAmt:NumVal("oilMonthAmt"),
+    gOn:$("gOn").checked,thWeek:NumVal("thWeek"),thMonth:getVal("thMonth"),thMonthAmt:NumVal("thMonthAmt"),
+    jinyue:scArray("jinyue")[0]||{},
+    daodaos:(function(){const a=[];$("daodao").querySelectorAll(".da-item").forEach(d=>{const t=d.querySelector("textarea").value.trim();if(t)a.push(t)});return a})(),
+    bless:getVal("blessPerson")};
+}
+function NumVal(id){const el=$(id);if(!el)return 0;const n=parseFloat(String(el.value).replace(/,/g,""));return isNaN(n)?0:n}
+function cleanNum(id){const el=$(id);if(!el)return 0;const n=parseInt(el.value,10);return isNaN(n)?0:n}
+
+/* ===== 套用 ===== */
+function scArray(containerId){const a=[];$(containerId).querySelectorAll(".bsp").forEach(w=>a.push(readScripture(w)));return a}
+function applyData(d){
+  setVal("svcDate",d.date);
+  ["speaker","leader","musician","usher","thanks"].forEach(k=>setVal(k,d[k]));
+  initSingleScripture("xuanzhao",d.xz||{});
+  $("worshipHymns").innerHTML="";(d.worship||[]).forEach(h=>makeHymn($("worshipHymns"),h,false));syncRespOptions();
+  $("dujing").innerHTML="";(d.dj||[]).forEach(x=>createScripture($("dujing"),true,x));
+  setVal("sermonTopic",d.sermon);
+  setResp(d.resp);
+  $("sachYes").checked=!!d.sach;updateSac();setVal("sachPerson",d.sachPerson);
+  (d.offering||[]).forEach(v=>{const c=$("offeringGroup").querySelector('input[value="'+v+'"]');if(c)c.checked=true});
+  setVal("welcomePerson",d.welcomePerson);
+  $("reportList").innerHTML="";(d.reports||[]).forEach(t=>addReport(t));
+  setVal("nextSpeaker",d.next&&d.next.sp);setVal("nextLeader",d.next&&d.next.ld);setVal("nextMusician",d.next&&d.next.mu);setVal("nextUsher",d.next&&d.next.us);setVal("nextThanks",d.next&&d.next.th);
+  const at=d.attendance||{};
+  setVal("pSunday",at.sun);setVal("pSchool",at.sch);setVal("pDisciple",at.disc);setVal("pPrayer",at.pr);setVal("pFellowship",at.fel);setVal("pPatrick",at.pat);
+  setVal("cWeek",fmtAmt(d.cWeek));setVal("cMonth",d.cMonth);setVal("cMonthAmt",fmtAmt(d.cMonthAmt));
+  setVal("tWeek",fmtAmt(d.tWeek));setVal("tMonth",d.tMonth);setVal("tMonthAmt",fmtAmt(d.tMonthAmt));
+  $("oilOn").checked=!!d.oilOn;toggleBody("oilOn","oilRow");
+  setVal("oilWeek",fmtAmt(d.oilWeek));setVal("oilMonth",d.oilMonth);setVal("oilMonthAmt",fmtAmt(d.oilMonthAmt));
+  $("gOn").checked=!!d.gOn;toggleBody("gOn","gRow");
+  setVal("thWeek",fmtAmt(d.thWeek));setVal("thMonth",d.thMonth);setVal("thMonthAmt",fmtAmt(d.thMonthAmt));
+  initXScripture("jinyue",d.jinyue||{});
+  $("daodao").innerHTML="";(d.daodaos||[]).forEach(t=>{const it=addDaodaoNode(t)});
+  setVal("blessPerson",d.bless);
+  onDateChange();
+}
+function setData(container,maker,more){}
+function initXScripture(id,data){$(id).innerHTML="";createScripture($(id),false,data)}
+function setResp(d){if(!d)return;syncRespOptions();if(d.mode==="worship"&&[...$("respPick").options].some(o=>o.value==="w"+d.idx)){$("respPick").value="w"+d.idx;respOnChange()}else{$("respPick").value="custom";respOnChange();$("respName").value=d.name||"";$("respUrl").value=d.url||"";$("respLyrics").value=d.lyrics||""}}
+function addDaodao(){addDaodaoItem()}
+function addDaodaoItem(val){if($("daodao").querySelectorAll(".da-item").length>=MAX_DAODAO)return;const n=$("daodao").querySelectorAll(".da-item").length;
+  const it=document.createElement("div");it.className="da-item";it.innerHTML="<div class='no'></div><textarea placeholder='代禱事項…'></textarea><button type='button' class='del-row' style='align-self:center'>✕</button>";
+  if(val!==undefined)it.querySelector("textarea").value=val;
+  it.querySelector(".del-row").onclick=()=>{it.remove();reDaodao()};
+  $("daodao").appendChild(it);reDaodao();return it}
+
+/* ===== 日期 ===== */
+function onDateChange(){const d=getVal("svcDate"),h=$("sacHint");if(!d){h.textContent="";return}const dt=new Date(d+"T00:00:00");if(isNaN(dt)){h.textContent="";return}const sun=dt.getDay()===0,nth=Math.ceil(dt.getDate()/7);
+  if(sun)h.innerHTML=nth===4?"<b>⚠ 每月第4個主日 — 有聖餐安排</b>":"（係第 "+nth+" 個星期日）";else h.textContent="⚠ 唔係星期日";
+}
+
+/* ===== 儲存/讀回 ===== */
+function getStore(){try{return JSON.parse(localStorage.getItem("mosSvcForm")||"{}")}catch(e){return{}}}
+function getDates(){return Object.keys(getStore()).sort()}
+function saveAsDate(){const date=getVal("svcDate");if(!date){toast("請先揀崇拜日期");return}const all=getStore();all[date]=collectReal();localStorage.setItem("mosSvcForm",JSON.stringify(all));toast("已儲存 "+date);listSaved()}
+function loadSaved(){const date=getVal("svcDate");if(!date){toast("請先揀日期");return}const all=getStore();if(!all[date]){toast("未有呢個日期版本");return}applyData(all[date]);toast("已讀回 "+date);listSaved()}
+function copyLastAsNew(){const date=getVal("svcDate");if(!date){toast("請先揀今週日期");return}const ds=getDates().filter(x=>x<date);if(!ds.length){toast("未有更早版本可複製");return}const last=ds[ds.length-1];if(!confirm("複製 "+last+" 內容入今週 "+date+" ？"))return;const all=getStore();const data=JSON.parse(JSON.stringify(all[last]));data.date=date;applyData(data);toast("已從 "+last+" 複製，可修改後儲存");listSaved()}
+function listSaved(){
+  const pick=$("savedPick");if(!pick)return;
+  const ds=getDates().sort().reverse(); // 最新在前
+  pick.innerHTML="";
+  const ph=document.createElement("option");ph.value="";ph.textContent="（揀已儲存版本）";pick.appendChild(ph);
+  ds.forEach(d=>{const o=document.createElement("option");o.value=d;o.textContent=d;pick.appendChild(o)});
+}
+function loadPicked(){
+  const v=getVal("savedPick");if(!v){toast("請先揀已儲存版本");return}
+  const all=getStore();if(!all[v]){toast("未有呢個日期版本");return}
+  openModal(v,all[v]);
+}
+let PICKED_DATA=null,PICKED_DATE=null;
+function openModal(date,data){PICKED_DATE=date;PICKED_DATA=data;$("modalMask").style.display="flex"}
+function modalYesAction(yes){
+  $("modalMask").style.display="none";
+  if(!yes||!PICKED_DATA)return;
+  applyData(PICKED_DATA);setVal("svcDate",PICKED_DATE);onDateChange();toast("已顯示 "+PICKED_DATE);
+  PICKED_DATA=null;PICKED_DATE=null;
+}
+function resetAll(){if(!confirm("清空所有輸入（唔會刪已存版本）？"))return;localStorage.setItem("mosSvcForm","{}");location.reload()}
+
+/* ===== 輸出 Word 檔（經 Vercel /api/generate） ===== */
+function exportJSON(){
+  const date=getVal("svcDate");if(!date){toast("請先揀崇拜日期");return}
+  const all=getStore();const data=all[date]||collectReal();data.date=date;
+  const btn=[...document.querySelectorAll("button")].find(b=>b.textContent.includes("輸出Word檔"));
+  let label=btn?btn.textContent:"";
+  if(btn){btn.disabled=true;btn.textContent="⏳ 生成中…"}
+  toast("正在生成 Word…");
+  fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)})
+    .then(r=>{if(!r.ok)throw new Error("伺服器錯誤 "+r.status);return r.blob()})
+    .then(blob=>{
+      const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="程序表-"+date+".docx";a.click();URL.revokeObjectURL(a.href);
+      toast("已生成 Word："+date);
+    })
+    .catch(e=>{toast("生成失敗："+e.message)})
+    .finally(()=>{if(btn){btn.disabled=false;btn.textContent="📤 輸出Word檔"}});
+}
+
+/* ===== 啟動 ===== */
+fillPeople();seedMonths();bindAmts();initXScripture("xuanzhao",{});initXScripture("jinyue",{});initResp();updateSac();listSaved();
+</script>
+</body>
+</html>
