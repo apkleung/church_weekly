@@ -112,6 +112,20 @@ def m(v):
     except (TypeError, ValueError):
         return "-"
 
+def append_cell_row(tbl, template_row_idx, cell_texts):
+    """複製 template_row（通常係「香膏瓶」行）做新一行 append 落表尾，
+       再逐一改 cell 文字。cell_texts 係 [上主日格, 月份格] 兩個。"""
+    if template_row_idx >= len(tbl.rows):
+        return
+    template_tr = tbl.rows[template_row_idx]._tr
+    new_tr = copy.deepcopy(template_tr)
+    tbl._tbl.append(new_tr)
+    # 用新 append 咗嘅 row 去 set 文字
+    new_row = tbl.rows[-1]
+    for ci, text in enumerate(cell_texts):
+        if ci < len(new_row.cells):
+            set_text(new_row.cells[ci].paragraphs[0], text)
+
 SUNDAY = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MOS程序表2026-09-20 (1).docx")
 SACR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "MOS程序表2026-08-2.docx")
 
@@ -271,6 +285,18 @@ def build(data, outpath):
             if len(t5.rows) >= 2:
                 set_text(t5.rows[1].cells[0].paragraphs[0], f"香膏瓶：{m(data.get('oilWeek'))}")
                 set_text(t5.rows[1].cells[1].paragraphs[0], f"{data.get('oilMonth') or ''}：{m(data.get('oilMonthAmt'))}")
+    # 感恩奉獻（gOn=true，加第三行）
+    if data.get("gOn") and len(doc.tables) >= 6:
+        t5g = doc.tables[5]
+        texts = [
+            f"感恩奉獻：{m(data.get('thWeek'))}",
+            f"{data.get('thMonth') or ''}：{m(data.get('thMonthAmt'))}",
+        ]
+        if len(t5g.rows) >= 3:
+            set_text(t5g.rows[2].cells[0].paragraphs[0], texts[0])
+            set_text(t5g.rows[2].cells[1].paragraphs[0], texts[1])
+        else:
+            append_cell_row(t5g, 1, texts)
 
     doc.save(outpath)
     print("OK 已生成:", outpath)

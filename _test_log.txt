@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "C:\Users\Amy Leung\OneDrive\Church_MOS\PPT (2019-)\MOS-Hermes-Support\make_program_tpl.py", line 501, in <module>
+    main()
+  File "C:\Users\Amy Leung\OneDrive\Church_MOS\PPT (2019-)\MOS-Hermes-Support\make_program_tpl.py", line 367, in main
+    data = json.load(open(a.json, encoding="utf-8"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '_test_gratitude.json'
+EXIT=1
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\api.py", line 27, in Document
+    document_part = cast("DocumentPart", Package.open(docx).main_document_part)
+                                         ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\opc\package.py", line 126, in open
+    pkg_reader = PackageReader.from_file(pkg_file)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\opc\pkgreader.py", line 22, in from_file
+    phys_reader = PhysPkgReader(pkg_file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\opc\phys_pkg.py", line 21, in __new__
+    raise PackageNotFoundError("Package not found at '%s'" % pkg_file)
+docx.opc.exceptions.PackageNotFoundError: Package not found at '_test_gratitude.docx'
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\api.py", line 27, in Document
+    document_part = cast("DocumentPart", Package.open(docx).main_document_part)
+                                         ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\opc\package.py", line 126, in open
+    pkg_reader = PackageReader.from_file(pkg_file)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\opc\pkgreader.py", line 22, in from_file
+    phys_reader = PhysPkgReader(pkg_file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Amy Leung\AppData\Local\hermes\hermes-agent\venv\Lib\site-packages\docx\opc\phys_pkg.py", line 21, in __new__
+    raise PackageNotFoundError("Package not found at '%s'" % pkg_file)
+docx.opc.exceptions.PackageNotFoundError: Package not found at '_test_gratitude.docx'

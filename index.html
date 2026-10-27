@@ -148,6 +148,8 @@
   <div class="sub">基督教宣聖會馬鞍山堂 — 程序表輸入</div>
   <div class="toolbar">
     <button onclick="exportJSON()">📤 輸出Word檔</button>
+    <button class="ghost" onclick="backupData()">💾 備份版本</button>
+    <button class="ghost" onclick="restoreData()">📥 匯入備份</button>
     <button class="ghost" onclick="resetAll()">🗑️ 清空</button>
   </div>
 </header>
@@ -334,6 +336,8 @@
 
 <footer class="footer">
   <button onclick="exportJSON()">📤 輸出Word檔</button>
+  <button class="ghost" onclick="backupData()">💾 備份版本</button>
+  <button class="ghost" onclick="restoreData()">📥 匯入備份</button>
   <button class="ghost" onclick="resetAll()">🗑️ 清空</button>
 </footer>
 <div class="toast" id="toast"></div>
@@ -674,6 +678,36 @@ function exportJSON(){
     })
     .catch(e=>{toast("生成失敗："+e.message)})
     .finally(()=>{if(btn){btn.disabled=false;btn.textContent="📤 輸出Word檔"}});
+}
+
+/* ===== 備份 / 匯入（防止 localStorage 被清而消失） ===== */
+function backupData(){
+  const all=getStore();const ds=Object.keys(all);
+  if(!ds.length){toast("未有已儲存版本可備份");return}
+  const blob=new Blob([JSON.stringify(all,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="程序表備份-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
+  toast("已備份 "+ds.length+" 個版本");
+}
+function restoreData(){
+  const inp=document.createElement("input");inp.type="file";inp.accept=".json,application/json";
+  inp.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const rd=new FileReader();
+    rd.onload=()=>{
+      try{
+        const obj=JSON.parse(rd.result);
+        if(!obj||typeof obj!=="object"||Array.isArray(obj))throw new Error("bad");
+        const all=getStore();let c=0;
+        Object.keys(obj).forEach(k=>{all[k]=obj[k];c++});
+        localStorage.setItem("mosSvcForm",JSON.stringify(all));
+        listSaved();toast("已匯入 "+c+" 個版本");
+      }catch(err){toast("匯入失敗：檔案格式唔啱")}
+    };
+    rd.readAsText(file);
+  };
+  inp.click();
 }
 
 /* ===== 啟動 ===== */
